@@ -41,6 +41,7 @@ if (args.get("video") and grabbed) or not args.get("video"):
         if args.get("video") and not grabbed:
             break
         skin2 = SDF.FrameToSkin(frame2, lower,upper)
+        #Returns the highlighted difference between skin frames
         skindiff = SDF.DiffSkin(skin1, skin2)
         cv2.imshow("images", skindiff)
         skin1 = np.copy(skin2)
