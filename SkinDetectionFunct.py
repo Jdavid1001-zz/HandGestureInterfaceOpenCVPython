@@ -30,6 +30,14 @@ def DiffSkin(skin1, skin2):
     # using an elliptical kernel
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
     # apply a series of erosions and dilations to the mask
-    thresh = cv2.erode(thresh, kernel, iterations = 2)
-    thresh = cv2.dilate(thresh, kernel, iterations = 2)
+    thresh = cv2.erode(thresh, kernel, iterations = 4)
+    thresh = cv2.dilate(thresh, kernel, iterations = 8)
     return thresh
+    
+def round28bit(num):
+    if num<0:
+        return 0
+    elif num>255:
+        return 255
+    else: 
+        return num
