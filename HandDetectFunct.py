@@ -13,7 +13,7 @@ h,w = img.shape[:2]
 cb = codebook.CodeBook(h,w)
 N=0
 
-def run():
+def mainHandDet():
     while(1):
         global N
         _,img = c.read()
