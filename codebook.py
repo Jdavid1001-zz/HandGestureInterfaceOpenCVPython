@@ -2,7 +2,6 @@
 #http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.148.9778&rep=rep1&type=pdf
 
 import numpy as np
-import cv2
 
 alpha = 5
 beta = 0.95
