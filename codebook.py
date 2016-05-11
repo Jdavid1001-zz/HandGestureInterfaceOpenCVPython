@@ -16,7 +16,7 @@ Tadd = 140
 Th= 80
 
 #Index of value
-mn,mx,f,l,p,q = 0,1,2,3,4,5
+minVal,maxVal,freq,l,p,q = 0,1,2,3,4,5
 
 class CodeBook():
     def __init__(self,height,width):
@@ -38,10 +38,10 @@ class CodeBook():
         else:
             found = False
             for cm in cb:
-                if(cm[mn]<=I<=cm[mx] and not found): 
-                    cm[mn] = ((I-alpha)+(cm[f]*cm[mn]))/(cm[f]+1.0)    
-                    cm[mx] = ((I+alpha)+(cm[f]*cm[mx]))/(cm[f]+1.0)
-                    cm[f] += 1
+                if(cm[minVal]<=I<=cm[maxVal] and not found): 
+                    cm[minVal] = ((I-alpha)+(cm[freq]*cm[minVal]))/(cm[freq]+1.0)  #subtract by ever decreasing vals  
+                    cm[maxVal] = ((I+alpha)+(cm[freq]*cm[maxVal]))/(cm[freq]+1.0)  #add onto by decreasing vals
+                    cm[freq] += 1
                     cm[l] = 0
                     cm[q] = t
                     found = True
@@ -60,10 +60,10 @@ class CodeBook():
         I,t = gray,self.time
         found = False
         for cm in cwm:
-            if(cm[mn]<=I<=cm[mx] and not found):
-                cm[mn] = (1-beta)*(I-alpha) + (beta*cm[mn])
-                cm[mx] = (1-beta)*(I+alpha) + (beta*cm[mx])
-                cm[f] += 1
+            if(cm[minVal]<=I<=cm[maxVal] and not found):
+                cm[minVal] = (1-beta)*(I-alpha) + (beta*cm[minVal])
+                cm[maxVal] = (1-beta)*(I+alpha) + (beta*cm[maxVal])
+                cm[freq] += 1
                 cm[l] = 0
                 cm[q] = t
                 found = True
@@ -72,10 +72,10 @@ class CodeBook():
         cwm[:] = [cw for cw in cwm if cw[l]<Tdel]  
         if found: return 0
         for cm in cwh:
-            if(cm[mn]<=I<=cm[mx] and not found):
-                cm[mn] = (1-beta)*(I-alpha) + (beta*cm[mn])
-                cm[mx] = (1-beta)*(I+alpha) + (beta*cm[mx])
-                cm[f] += 1
+            if(cm[minVal]<=I<=cm[maxVal] and not found):
+                cm[minVal] = (1-beta)*(I-alpha) + (beta*cm[minVal])
+                cm[maxVal] = (1-beta)*(I+alpha) + (beta*cm[maxVal])
+                cm[freq] += 1
                 cm[l] = 0
                 cm[q] = t
                 found = True
@@ -85,7 +85,7 @@ class CodeBook():
             c = [max(0.0,I-alpha),min(255.0,I+alpha),1,0,t,t]
             cwh.append(c)
         cwh[:] = [cw for cw in cwh if cw[l]<Th]
-        tomove = [cw for cw in cwh if cw[f]>Tadd]
+        tomove = [cw for cw in cwh if cw[freq]>Tadd]
         cwh[:] = [cw for cw in cwh if not cw in tomove]
         cwm.extend(tomove)
         return 255
