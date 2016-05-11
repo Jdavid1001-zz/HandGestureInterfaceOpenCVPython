@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+#Special Shout out to
 #http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.148.9778&rep=rep1&type=pdf
+#For code samples and my template
+#Also, shout out to 'Learning OpenCV' by Bradski and Kaehler for their explanations
 
 import numpy as np
 
@@ -11,7 +14,7 @@ Tadd = 140
 Th= 80
 
 #Index of value
-mn,mx,f,l,p,q=0,1,2,3,4,5
+mn,mx,f,l,p,q = 0,1,2,3,4,5
 
 class CodeBook():
     def __init__(self,height,width):
