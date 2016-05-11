@@ -3,6 +3,8 @@
 #http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.148.9778&rep=rep1&type=pdf
 #For code samples and my template
 #Also, shout out to 'Learning OpenCV' by Bradski and Kaehler for their explanations
+#Since we are allowed to use others' work for this class, I changed it so I could
+#understand it now and in the future
 
 import numpy as np
 
@@ -22,14 +24,14 @@ class CodeBook():
         self.width = width
         self.M = np.empty((height, width), dtype=np.object)
         self.H = np.empty((height, width), dtype=np.object)
-        self.t = 1
+        self.time = 1
         
-        filler = np.frompyfunc(lambda x: list(), 1, 1)
-        filler(self.M,self.M)
-        filler(self.H,self.H)
+        fillerFunc = np.frompyfunc(lambda x: list(), 1, 1) #Use frompyfunc for speed
+        fillerFunc(self.M,self.M)
+        fillerFunc(self.H,self.H)
 
     def updatev(self,gray,cb):
-        I,t = gray,self.t     
+        I,t = gray,self.time     
         if not cb:
             c = [max(0.0,I-alpha),min(255.0,I+alpha),1,t-1,t,t]
             cb.append(c)
@@ -53,9 +55,9 @@ class CodeBook():
         M = self.M
         updatev = np.vectorize(self.updatev,otypes=[np.object])
         self.M=updatev(gray,M)
-        self.t += 1   
-    def fgv(self,gray,cwm,cwh):
-        I,t = gray,self.t
+        self.time += 1   
+    def foregroundVector(self,gray,cwm,cwh):
+        I,t = gray,self.time
         found = False
         for cm in cwm:
             if(cm[mn]<=I<=cm[mx] and not found):
@@ -87,9 +89,9 @@ class CodeBook():
         cwh[:] = [cw for cw in cwh if not cw in tomove]
         cwm.extend(tomove)
         return 255
-    def fg(self,gray):  
+    def foreground(self,gray):  
         M,H = self.M,self.H
-        fgv = np.vectorize(self.fgv,otypes=[np.uint8])
-        fg = fgv(gray,M,H)
-        self.t += 1
-        return fg
+        fgvFunc = np.vectorize(self.foregroundVector,otypes=[np.uint8])
+        foreground = fgvFunc(gray,M,H)
+        self.time += 1
+        return foreground
