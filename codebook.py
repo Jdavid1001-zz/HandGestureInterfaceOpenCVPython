@@ -13,11 +13,11 @@ Th= 80
 mn,mx,f,l,p,q=0,1,2,3,4,5
 
 class CodeBook():
-    def __init__(self,h,w):
-        self.h = h
-        self.w = w
-        self.M = np.empty((h, w), dtype=np.object)
-        self.H = np.empty((h, w), dtype=np.object)
+    def __init__(self,height,width):
+        self.height = height
+        self.width = width
+        self.M = np.empty((height, width), dtype=np.object)
+        self.H = np.empty((height, width), dtype=np.object)
         filler = np.frompyfunc(lambda x: list(), 1, 1)
         filler(self.M,self.M)
         filler(self.H,self.H)
@@ -46,13 +46,12 @@ class CodeBook():
                 cb.append(c)                
         return cb
     def update(self,gray):       
-        h,w,M = self.h,self.w,self.M
+        M = self.M
         updatev = np.vectorize(self.updatev,otypes=[np.object])
         self.M=updatev(gray,M)
         self.t += 1   
     def fgv(self,gray,cwm,cwh):
         I,t = gray,self.t
-        pixval = 0
         found = False
         for cm in cwm:
             if(cm[mn]<=I<=cm[mx] and not found):
@@ -89,7 +88,7 @@ class CodeBook():
         cwm.extend(tomove)
         return 255
     def fg(self,gray):  
-        h,w,M,H = self.h,self.w,self.M,self.H
+        M,H = self.M,self.H
         fgv = np.vectorize(self.fgv,otypes=[np.uint8])
         fg = fgv(gray,M,H)
         self.t += 1
