@@ -25,7 +25,7 @@ def mainHandDet():
             cb.update(gray)
         else:
             #Getting Background removed image
-            fg = cb.fg(gray)
+            fg = cb.foreground(gray)
             #Erroding and then dilating
             element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(2,2))
             fg = cv2.morphologyEx(fg,cv2.MORPH_OPEN,element)
