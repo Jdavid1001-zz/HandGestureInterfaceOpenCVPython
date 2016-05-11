@@ -38,7 +38,7 @@ class CodeBook():
         else:
             found = False
             for cm in cb:
-                if(cm[minVal]<=I<=cm[maxVal] and not found): 
+                if(cm[minVal]<=I<=cm[maxVal] and not found): #part of background
                     cm[minVal] = ((I-alpha)+(cm[freq]*cm[minVal]))/(cm[freq]+1.0)  #subtract by ever decreasing vals  
                     cm[maxVal] = ((I+alpha)+(cm[freq]*cm[maxVal]))/(cm[freq]+1.0)  #add onto by decreasing vals
                     cm[freq] += 1
@@ -56,7 +56,7 @@ class CodeBook():
         updatev = np.vectorize(self.updatev,otypes=[np.object])
         self.M=updatev(gray,M)
         self.time += 1   
-    def foregroundVector(self,gray,cwm,cwh):
+    def foregroundVector(self,gray,cwm,cwh): #part of background
         I,t = gray,self.time
         found = False
         for cm in cwm:
