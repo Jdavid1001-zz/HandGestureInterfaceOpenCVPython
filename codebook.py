@@ -10,6 +10,7 @@ Tdel = 80
 Tadd = 140
 Th= 80
 
+#Index of value
 mn,mx,f,l,p,q=0,1,2,3,4,5
 
 class CodeBook():
@@ -18,10 +19,11 @@ class CodeBook():
         self.width = width
         self.M = np.empty((height, width), dtype=np.object)
         self.H = np.empty((height, width), dtype=np.object)
+        self.t = 1
+        
         filler = np.frompyfunc(lambda x: list(), 1, 1)
         filler(self.M,self.M)
         filler(self.H,self.H)
-        self.t = 1
 
     def updatev(self,gray,cb):
         I,t = gray,self.t     
@@ -35,7 +37,6 @@ class CodeBook():
                     cm[mn] = ((I-alpha)+(cm[f]*cm[mn]))/(cm[f]+1.0)    
                     cm[mx] = ((I+alpha)+(cm[f]*cm[mx]))/(cm[f]+1.0)
                     cm[f] += 1
-                    #cm[l] = max(cm[l],t-cm[q])
                     cm[l] = 0
                     cm[q] = t
                     found = True
@@ -58,13 +59,11 @@ class CodeBook():
                 cm[mn] = (1-beta)*(I-alpha) + (beta*cm[mn])
                 cm[mx] = (1-beta)*(I+alpha) + (beta*cm[mx])
                 cm[f] += 1
-                #cm[l] = max(cm[l],t-cm[q])
                 cm[l] = 0
                 cm[q] = t
                 found = True
             else:
                 cm[l] += 1
-                #cm[l]=max(cm[l],t-cm[q]+cm[p]-1)
         cwm[:] = [cw for cw in cwm if cw[l]<Tdel]  
         if found: return 0
         for cm in cwh:
@@ -72,12 +71,10 @@ class CodeBook():
                 cm[mn] = (1-beta)*(I-alpha) + (beta*cm[mn])
                 cm[mx] = (1-beta)*(I+alpha) + (beta*cm[mx])
                 cm[f] += 1
-                #cm[l] = max(cm[l],t-cm[q])
                 cm[l] = 0
                 cm[q] = t
                 found = True
             else:
-                #cm[l]=max(cm[l],t-cm[q]+cm[p]-1)
                 cm[l] += 1
         if not found:
             c = [max(0.0,I-alpha),min(255.0,I+alpha),1,0,t,t]
